@@ -68,7 +68,7 @@ const App = () => {
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex-shrink-0 font-bold text-2xl text-slate-900 tracking-tight">
-                            Faizul<span className="text-blue-600">.Dev</span>
+                            Faizul<span className="text-blue-600">x</span>Tech
                         </div>
 
                         {/* Desktop Menu */}
@@ -128,9 +128,9 @@ const App = () => {
                     <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl relative z-10">
                         {/* Replace src below with your actual photo path */}
                         <img
-                            src="/api/placeholder/400/400"
+                            src="/dp.jpg"
                             alt="Muhamad Faizul"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover scale-200"
                         />
                     </div>
                     {/* Decorative Circle */}
