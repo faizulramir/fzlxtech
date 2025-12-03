@@ -49,7 +49,7 @@ const portfolioData = {
             description: "Developed enterprise software for government and corporate clients. Focused on secure system designs and agile delivery."
         }
     ],
-    techStack: ["Laravel", "PHP", "React.js", "Electron.js", "Ionic.js", "MySQL", "JavaScript", "Git"]
+    techStack: ["Laravel", "PHP", "React.js", "Electron.js", "Ionic.js", "Flutter", "JavaScript", "TypeScript"]
 };
 
 const App = () => {
@@ -235,7 +235,7 @@ const App = () => {
                             <div className="flex items-center gap-2 mb-4 md:mb-0">
                                 <MapPin size={16} /> {portfolioData.personal.location}
                             </div>
-                            <p>&copy; {new Date().getFullYear()} Faizul.Dev. All rights reserved.</p>
+                            <p>&copy; {new Date().getFullYear()} FaizulxTech. All rights reserved.</p>
                         </div>
                     </div>
                 </div>
