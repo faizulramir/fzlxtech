@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="250" height="150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ftg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="250" height="150" fill="white"/>
+  
+  <!-- F -->
+  <g transform="translate(40,30)">
+    <rect x="0" y="0" width="12" height="90" fill="url(#ftg)" rx="2"/>
+    <rect x="0" y="0" width="55" height="12" fill="url(#ftg)" rx="2"/>
+    <rect x="0" y="35" width="40" height="12" fill="url(#ftg)" rx="2"/>
+  </g>
+  
+  <!-- T -->
+  <g transform="translate(110,30)">
+    <rect x="0" y="0" width="65" height="12" fill="url(#ftg)" rx="2"/>
+    <rect x="27" y="0" width="11" height="90" fill="url(#ftg)" rx="2"/>
+  </g>
+</svg>

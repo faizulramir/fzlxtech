@@ -1,0 +1,30 @@
+{
+    "name": "FzlxTech - Lead Web Developer & System Architect",
+    "short_name": "FzlxTech",
+    "description": "Portfolio of Muhamad Faizul Bin Roni Amir - Lead Web Developer specializing in Laravel, React, and enterprise solutions.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2563eb",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "any",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "/dp.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg"
+        }
+    ],
+    "categories": ["business", "portfolio"],
+    "lang": "en-MY",
+    "dir": "ltr"
+}

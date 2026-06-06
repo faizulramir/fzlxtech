@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Redirect www to non-www (canonical domain)
+    RewriteCond %{HTTP_HOST} ^www\.fzlxtech\.cloud$ [NC]
+    RewriteRule ^(.*)$ https://fzlxtech.cloud/$1 [L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
