@@ -1,128 +1,231 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link, Head, usePage } from '@inertiajs/react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SiteLayoutProps {
     children: React.ReactNode;
 }
 
+const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/#about', label: 'About' },
+    { href: '/#services', label: 'Services' },
+    { href: '/#experience', label: 'Experience' },
+    { href: '/blog', label: 'Blog' },
+];
+
+const stagger = {
+    animate: {
+        transition: { staggerChildren: 0.07, delayChildren: 0.1 },
+    },
+};
+
+const fadeSlideIn = {
+    initial: { opacity: 0, x: -10 },
+    animate: { opacity: 1, x: 0 },
+};
+
 const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const { url } = usePage();
 
-    // Determine canonical URL - use the current URL without query params for canonical
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     const canonicalUrl = useMemo(() => {
-        // Get clean URL (no query params except for pagination that should be canonical)
         const cleanUrl = url.split('?')[0];
-        // Ensure it's absolute with HTTPS
-        if (cleanUrl.startsWith('http')) {
-            return cleanUrl;
-        }
-        // If it's a relative path, prepend the base URL (non-www version)
-        const baseUrl = 'https://fzlxtech.cloud';
-        return baseUrl + cleanUrl;
+        if (cleanUrl.startsWith('http')) return cleanUrl;
+        return 'https://fzlxtech.cloud' + cleanUrl;
     }, [url]);
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
-            {/* --- HEAD: Global meta tags --- */}
+        <div className="min-h-screen bg-black text-white font-sans antialiased selection:bg-white selection:text-black">
             <Head>
                 <link rel="canonical" href={canonicalUrl} />
             </Head>
+
             {/* --- NAVIGATION --- */}
-            <nav className="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
+            <motion.nav
+                initial={{ y: -100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                className={`fixed w-full z-50 transition-all duration-300 ${
+                    scrolled
+                        ? 'bg-black/90 backdrop-blur-xl border-b border-white/10'
+                        : 'bg-transparent'
+                }`}
+            >
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
-                        <div className="flex-shrink-0 font-bold text-2xl text-slate-900 tracking-tight">
-                            <Link href="/" className="hover:opacity-80 transition">
-                                Faizul<span className="text-blue-600">x</span>Tech
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8 }}
+                            className="flex-shrink-0"
+                        >
+                            <Link href="/" className="text-2xl font-bold tracking-tighter text-white hover:opacity-80 transition-opacity">
+                                Faizul<span className="text-white/40">x</span>Tech
                             </Link>
-                        </div>
+                        </motion.div>
 
                         {/* Desktop Menu */}
-                        <div className="hidden md:flex space-x-8">
-                            <Link href="/" className="text-slate-600 hover:text-blue-600 font-medium transition">Home</Link>
-                            <Link href="/#about" className="text-slate-600 hover:text-blue-600 font-medium transition">About</Link>
-                            <Link href="/#services" className="text-slate-600 hover:text-blue-600 font-medium transition">Services</Link>
-                            <Link href="/#experience" className="text-slate-600 hover:text-blue-600 font-medium transition">Experience</Link>
-                            <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition">Blog</Link>
-                            <Link href="/#contact" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Hire Me</Link>
-                        </div>
+                        <motion.div
+                            variants={stagger}
+                            initial="initial"
+                            animate="animate"
+                            className="hidden md:flex items-center space-x-1"
+                        >
+                            {navLinks.map((link) => (
+                                <motion.div key={link.href} variants={fadeSlideIn}>
+                                    <Link
+                                        href={link.href}
+                                        className="relative px-4 py-2 text-sm text-white/60 hover:text-white transition-colors duration-300 group"
+                                    >
+                                        {link.label}
+                                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-white group-hover:w-3/4 transition-all duration-300" />
+                                    </Link>
+                                </motion.div>
+                            ))}
+                            <motion.div variants={fadeSlideIn}>
+                                <Link
+                                    href="/#contact"
+                                    className="ml-4 px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                                >
+                                    Hire Me
+                                </Link>
+                            </motion.div>
+                        </motion.div>
 
                         {/* Mobile Menu Button */}
-                        <div className="md:hidden">
-                            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600 hover:text-slate-900">
-                                {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                        <motion.div className="md:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            <button
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                className="text-white/60 hover:text-white transition-colors p-2"
+                            >
+                                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                             </button>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
 
                 {/* Mobile Menu */}
-                {isMenuOpen && (
-                    <div className="md:hidden bg-white border-t">
-                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                            <Link href="/" className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md" onClick={() => setIsMenuOpen(false)}>Home</Link>
-                            <Link href="/#about" className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md" onClick={() => setIsMenuOpen(false)}>About</Link>
-                            <Link href="/#services" className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md" onClick={() => setIsMenuOpen(false)}>Services</Link>
-                            <Link href="/#experience" className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md" onClick={() => setIsMenuOpen(false)}>Experience</Link>
-                            <Link href="/blog" className="block px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md" onClick={() => setIsMenuOpen(false)}>Blog</Link>
-                            <Link href="/#contact" className="block px-3 py-2 text-blue-600 font-bold" onClick={() => setIsMenuOpen(false)}>Hire Me</Link>
-                        </div>
-                    </div>
-                )}
-            </nav>
+                <AnimatePresence>
+                    {isMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="md:hidden bg-black/95 backdrop-blur-xl border-t border-white/10 overflow-hidden"
+                        >
+                            <div className="px-4 py-4 space-y-1">
+                                {navLinks.map((link, i) => (
+                                    <motion.div
+                                        key={link.href}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: i * 0.05 }}
+                                    >
+                                        <Link
+                                            href={link.href}
+                                            className="block px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                            onClick={() => setIsMenuOpen(false)}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </motion.div>
+                                ))}
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: navLinks.length * 0.05 }}
+                                >
+                                    <Link
+                                        href="/#contact"
+                                        className="block px-4 py-3 mt-2 bg-white text-black text-center rounded-lg font-medium"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        Hire Me
+                                    </Link>
+                                </motion.div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.nav>
 
             {/* Main Content */}
-            <main className="pt-20">
-                {children}
-            </main>
+            <main>{children}</main>
 
             {/* --- FOOTER --- */}
-            <footer className="bg-slate-900 text-slate-300 py-12">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <footer className="border-t border-white/10 bg-black">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="grid grid-cols-1 md:grid-cols-3 gap-12"
+                    >
                         <div>
-                            <h3 className="text-white text-lg font-bold mb-4">FzlxTech</h3>
-                            <p className="text-sm">
+                            <Link href="/" className="text-2xl font-bold tracking-tighter text-white">
+                                Faizul<span className="text-white/40">x</span>Tech
+                            </Link>
+                            <p className="mt-4 text-sm text-white/40 leading-relaxed">
                                 Super Web Developer & System Architect building scalable digital solutions.
                             </p>
                         </div>
 
                         <div>
-                            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
-                            <ul className="space-y-2 text-sm">
-                                <li><Link href="/" className="hover:text-white transition">Home</Link></li>
-                                <li><Link href="/#about" className="hover:text-white transition">About</Link></li>
-                                <li><Link href="/#services" className="hover:text-white transition">Services</Link></li>
-                                <li><Link href="/#experience" className="hover:text-white transition">Experience</Link></li>
-                                <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
+                            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
+                            <ul className="space-y-3">
+                                {navLinks.map((link) => (
+                                    <li key={link.href}>
+                                        <Link href={link.href} className="text-sm text-white/40 hover:text-white transition-colors duration-300">
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
 
                         <div>
-                            <h4 className="text-white font-semibold mb-4">Contact</h4>
-                            <ul className="space-y-2 text-sm">
-                                <li>{'Muhamad Faizul Bin Roni Amir'}</li>
+                            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
+                            <ul className="space-y-3 text-sm text-white/40">
+                                <li>Muhamad Faizul Bin Roni Amir</li>
                                 <li>Shah Alam, Selangor, Malaysia</li>
                                 <li>
-                                    <a href="tel:+60178016870" className="hover:text-white transition">+60 17-801 6870</a>
+                                    <a href="tel:+60178016870" className="hover:text-white transition-colors duration-300">+60 17-801 6870</a>
                                 </li>
                                 <li>
-                                    <a href="mailto:faizul.ramir@gmail.com" className="hover:text-white transition">faizul.ramir@gmail.com</a>
+                                    <a href="mailto:faizul.ramir@gmail.com" className="hover:text-white transition-colors duration-300">faizul.ramir@gmail.com</a>
                                 </li>
                                 <li>
-                                    <a href="https://linkedin.com/in/faizul-roni-amir-5009a4197" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-                                        LinkedIn Profile
+                                    <a href="https://linkedin.com/in/faizul-roni-amir-5009a4197" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:text-white transition-colors duration-300 group">
+                                        LinkedIn
+                                        <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </motion.div>
 
-                    <div className="border-t border-slate-800 mt-8 pt-8 text-center text-sm">
-                        <p>&copy; {new Date().getFullYear()} FzlxTech. All rights reserved.</p>
-                    </div>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        className="border-t border-white/5 mt-12 pt-8 text-center"
+                    >
+                        <p className="text-xs text-white/20">
+                            &copy; {new Date().getFullYear()} FzlxTech. All rights reserved.
+                        </p>
+                    </motion.div>
                 </div>
             </footer>
         </div>

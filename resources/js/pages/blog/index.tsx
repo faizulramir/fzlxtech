@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link, usePage, router, Head } from '@inertiajs/react';
 import { format } from 'date-fns';
 import SiteLayout from '@/layouts/site-layout';
-import { Search, X } from 'lucide-react';
+import { Search, X, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface BlogPost {
     id: number;
@@ -30,11 +31,19 @@ interface BlogIndexProps {
     search?: string;
 }
 
+const stagger = {
+    animate: { transition: { staggerChildren: 0.08 } },
+};
+
+const fadeUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+};
+
 const BlogIndex = ({ posts, search }: BlogIndexProps) => {
     const { auth } = usePage().props as any;
     const [searchInput, setSearchInput] = useState(search || '');
 
-    // Update local input when page loads with search param (e.g., back button)
     useEffect(() => {
         setSearchInput(search || '');
     }, [search]);
@@ -52,45 +61,55 @@ const BlogIndex = ({ posts, search }: BlogIndexProps) => {
         router.get('/blog');
     };
 
-    // SEO meta
     const pageTitle = search ? `Search: "${search}" - Blog` : 'Blog - FzlxTech';
-    const pageDescription = search 
+    const pageDescription = search
         ? `Search results for "${search}" in the FzlxTech blog about web development, Laravel, React, and system architecture.`
         : 'Thoughts on web development, system architecture, and technology from FzlxTech.';
 
     return (
         <SiteLayout>
-            <Head
-                title={pageTitle}
-                meta={[
-                    { name: 'description', content: pageDescription },
-                    { property: 'og:title', content: pageTitle },
-                    { property: 'og:description', content: pageDescription },
-                    { property: 'og:type', content: 'website' },
-                    { name: 'twitter:title', content: pageTitle },
-                    { name: 'twitter:description', content: pageDescription },
-                ]}
-            />
-            <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-slate-900 mb-4">Blog</h1>
-                    <p className="text-lg text-slate-600">
+            <Head>
+                <title>{pageTitle}</title>
+                <meta name="description" content={pageDescription} />
+                <meta property="og:title" content={pageTitle} />
+                <meta property="og:description" content={pageDescription} />
+                <meta property="og:type" content="website" />
+                <meta name="twitter:title" content={pageTitle} />
+                <meta name="twitter:description" content={pageDescription} />
+            </Head>
+            <div className="max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+                <motion.div
+                    initial="initial"
+                    animate="animate"
+                    variants={stagger}
+                    className="text-center mb-16"
+                >
+                    <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+                        Blog
+                    </motion.h1>
+                    <motion.p variants={fadeUp} className="text-lg text-white/30">
                         Thoughts on web development, system architecture, and technology.
-                    </p>
-                </div>
+                    </motion.p>
+                </motion.div>
 
                 {/* Search Bar */}
-                <form onSubmit={handleSearch} className="mb-8">
+                <motion.form
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    onSubmit={handleSearch}
+                    className="mb-12"
+                >
                     <div className="relative max-w-xl mx-auto">
                         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <Search className="h-5 w-5 text-slate-400" />
+                            <Search className="h-5 w-5 text-white/20" />
                         </div>
                         <input
                             type="text"
                             value={searchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
                             placeholder="Search articles..."
-                            className="block w-full pl-11 pr-10 py-3 border border-slate-300 rounded-xl bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+                            className="block w-full pl-11 pr-10 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all"
                         />
                         {searchInput && (
                             <button
@@ -98,48 +117,61 @@ const BlogIndex = ({ posts, search }: BlogIndexProps) => {
                                 onClick={clearSearch}
                                 className="absolute inset-y-0 right-0 pr-4 flex items-center"
                             >
-                                <X className="h-5 w-5 text-slate-400 hover:text-slate-600" />
+                                <X className="h-5 w-5 text-white/30 hover:text-white/60 transition-colors" />
                             </button>
                         )}
                     </div>
-                </form>
+                </motion.form>
 
                 {/* Admin quick action */}
                 {auth?.user && (
-                    <div className="text-center mb-8">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-center mb-12"
+                    >
                         <Link
                             href="/blog/posts/create"
-                            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                            className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-black rounded-full font-medium text-sm hover:bg-white/90 transition-all duration-300"
                         >
                             + Write New Post
                         </Link>
-                    </div>
+                    </motion.div>
                 )}
 
                 {posts.data.length === 0 ? (
-                    <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
-                        <p className="text-slate-500">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center py-16 border border-white/5 rounded-2xl"
+                    >
+                        <p className="text-white/30">
                             {search ? 'No articles match your search.' : 'No blog posts yet. Check back soon!'}
                         </p>
                         {search && (
                             <button
                                 onClick={clearSearch}
-                                className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+                                className="mt-4 text-white/50 hover:text-white font-medium transition-colors"
                             >
                                 Clear search
                             </button>
                         )}
-                    </div>
+                    </motion.div>
                 ) : (
-                    <div className="space-y-8">
+                    <motion.div
+                        initial="initial"
+                        animate="animate"
+                        variants={stagger}
+                        className="space-y-6"
+                    >
                         {posts.data.map((post) => (
-                            <Link
-                                key={post.id}
-                                href={`/blog/${post.slug}`}
-                                className="block bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition"
-                            >
-                                <div className="p-6">
-                                    <div className="flex items-center gap-2 text-sm text-slate-500 mb-3">
+                            <motion.div key={post.id} variants={fadeUp}>
+                                <Link
+                                    href={`/blog/${post.slug}`}
+                                    className="block p-6 rounded-2xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/10 transition-all duration-300 group"
+                                >
+                                    <div className="flex items-center gap-3 text-sm text-white/20 mb-3">
                                         <time dateTime={post.published_at}>
                                             {format(new Date(post.published_at), 'MMMM d, yyyy')}
                                         </time>
@@ -147,19 +179,20 @@ const BlogIndex = ({ posts, search }: BlogIndexProps) => {
                                         <span>{post.user?.name || 'Anonymous'}</span>
                                     </div>
 
-                                    <h2 className="text-2xl font-bold text-slate-900 mb-3 hover:text-blue-600 transition">
+                                    <h2 className="text-2xl font-bold text-white mb-3 group-hover:text-white/80 transition-colors">
                                         {post.title}
                                     </h2>
 
                                     {post.excerpt && (
-                                        <p className="text-slate-600 mb-4 line-clamp-3">
+                                        <p className="text-white/30 mb-5 line-clamp-3 leading-relaxed">
                                             {post.excerpt}
                                         </p>
                                     )}
 
                                     <div className="flex items-center gap-4">
-                                        <span className="text-blue-600 hover:text-blue-700 font-medium whitespace-nowrap">
-                                            Read more →
+                                        <span className="text-white/50 group-hover:text-white font-medium text-sm inline-flex items-center gap-1 transition-colors">
+                                            Read more
+                                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                                         </span>
 
                                         {post.meta_keywords && (
@@ -167,7 +200,7 @@ const BlogIndex = ({ posts, search }: BlogIndexProps) => {
                                                 {post.meta_keywords.split(',').map((keyword: string, idx: number) => (
                                                     <span
                                                         key={idx}
-                                                        className="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-full"
+                                                        className="px-2.5 py-0.5 bg-white/5 text-white/30 text-xs rounded-full border border-white/5"
                                                     >
                                                         {keyword.trim()}
                                                     </span>
@@ -175,29 +208,34 @@ const BlogIndex = ({ posts, search }: BlogIndexProps) => {
                                             </div>
                                         )}
                                     </div>
-                                </div>
-                            </Link>
+                                </Link>
+                            </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 )}
 
                 {posts.links && posts.links.length > 1 && (
-                    <div className="mt-12 flex justify-center">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                        className="mt-16 flex justify-center"
+                    >
                         <nav className="flex gap-2">
                             {posts.links.map((link, idx) => (
                                 <Link
                                     key={idx}
                                     href={link.url || '#'}
                                     dangerouslySetInnerHTML={{ __html: link.label }}
-                                    className={`px-3 py-2 rounded ${
+                                    className={`px-4 py-2 rounded-lg text-sm transition-all duration-300 ${
                                         link.active
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                                            ? 'bg-white text-black font-medium'
+                                            : 'text-white/40 border border-white/10 hover:bg-white/5 hover:text-white/70'
                                     }`}
                                 />
                             ))}
                         </nav>
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </SiteLayout>

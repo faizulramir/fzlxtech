@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { usePage, Link, router } from '@inertiajs/react';
 import SiteLayout from '@/layouts/site-layout';
+import { ArrowLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface PostData {
     id: number;
@@ -20,6 +22,19 @@ interface BlogEditProps {
     post: PostData;
 }
 
+const stagger = {
+    animate: { transition: { staggerChildren: 0.06 } },
+};
+
+const fadeUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+};
+
+const inputClass = "w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all";
+
+const labelClass = "block text-sm font-medium text-white/50 mb-2";
+
 const BlogEdit = ({ post }: BlogEditProps) => {
     const { errors } = usePage().props;
     const [title, setTitle] = useState(post.title);
@@ -38,7 +53,6 @@ const BlogEdit = ({ post }: BlogEditProps) => {
     const [processing, setProcessing] = useState(false);
 
     useEffect(() => {
-        // Reset form when post prop changes
         setTitle(post.title);
         setExcerpt(post.excerpt || '');
         setContent(post.content);
@@ -87,164 +101,165 @@ const BlogEdit = ({ post }: BlogEditProps) => {
 
     return (
         <SiteLayout>
-            <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                <div className="mb-8 flex items-center justify-between">
-                    <div>
-                        <Link
-                            href={`/blog/${post.slug}`}
-                            className="text-blue-600 hover:text-blue-700 text-sm mb-2 block"
-                        >
-                            ← View Post
-                        </Link>
-                        <h1 className="text-3xl font-bold text-slate-900">Edit Post</h1>
-                        <p className="text-slate-600 mt-2">Update your blog post.</p>
-                    </div>
-                </div>
+            <div className="max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+                <motion.div
+                    initial="initial"
+                    animate="animate"
+                    variants={stagger}
+                >
+                    <motion.div variants={fadeUp} className="mb-10 flex items-center justify-between">
+                        <div>
+                            <Link
+                                href={`/blog/${post.slug}`}
+                                className="inline-flex items-center gap-2 text-white/40 hover:text-white text-sm mb-4 transition-colors group"
+                            >
+                                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+                                View Post
+                            </Link>
+                            <h1 className="text-4xl font-bold text-white tracking-tight">Edit Post</h1>
+                            <p className="text-white/30 mt-2">Update your blog post.</p>
+                        </div>
+                    </motion.div>
 
-                <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
-                    {/* Title */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Title <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
-                    </div>
+                    <motion.form
+                        variants={fadeUp}
+                        onSubmit={handleSubmit}
+                        className="rounded-2xl border border-white/5 bg-white/[0.01] p-8 space-y-6"
+                    >
+                        {/* Title */}
+                        <div>
+                            <label className={labelClass}>
+                                Title <span className="text-red-400">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className={inputClass}
+                            />
+                            {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title}</p>}
+                        </div>
 
-                    {/* Excerpt */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Excerpt (Optional)
-                        </label>
-                        <textarea
-                            value={excerpt}
-                            onChange={(e) => setExcerpt(e.target.value)}
-                            rows={3}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        {errors.excerpt && <p className="mt-1 text-sm text-red-600">{errors.excerpt}</p>}
-                    </div>
+                        {/* Excerpt */}
+                        <div>
+                            <label className={labelClass}>Excerpt (Optional)</label>
+                            <textarea
+                                value={excerpt}
+                                onChange={(e) => setExcerpt(e.target.value)}
+                                rows={3}
+                                className={inputClass}
+                            />
+                            {errors.excerpt && <p className="mt-1 text-sm text-red-400">{errors.excerpt}</p>}
+                        </div>
 
-                    {/* Content */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Content <span className="text-red-500">*</span>
-                        </label>
-                        <textarea
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            rows={15}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-                        />
-                        {errors.content && <p className="mt-1 text-sm text-red-600">{errors.content}</p>}
-                    </div>
+                        {/* Content */}
+                        <div>
+                            <label className={labelClass}>
+                                Content <span className="text-red-400">*</span>
+                            </label>
+                            <textarea
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                rows={15}
+                                className={`${inputClass} font-mono text-sm`}
+                            />
+                            {errors.content && <p className="mt-1 text-sm text-red-400">{errors.content}</p>}
+                        </div>
 
-                    {/* Featured Image */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Featured Image (Optional)
-                        </label>
-                        <input
-                            type="file"
-                            accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
-                            onChange={handleImageChange}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        {previewImage && (
-                            <div className="mt-3">
-                                <img
-                                    src={previewImage}
-                                    alt="Preview"
-                                    className="w-32 h-32 object-cover rounded-lg border border-slate-200"
-                                />
-                            </div>
-                        )}
-                        {errors.featured_image && <p className="mt-1 text-sm text-red-600">{errors.featured_image}</p>}
-                    </div>
+                        {/* Featured Image */}
+                        <div>
+                            <label className={labelClass}>Featured Image (Optional)</label>
+                            <input
+                                type="file"
+                                accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                                onChange={handleImageChange}
+                                className={`${inputClass} file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:bg-white/10 file:text-white/60 file:text-sm file:hover:bg-white/20 file:transition-all file:cursor-pointer`}
+                            />
+                            {previewImage && (
+                                <div className="mt-3">
+                                    <img
+                                        src={previewImage}
+                                        alt="Preview"
+                                        className="w-32 h-32 object-cover rounded-lg border border-white/10"
+                                    />
+                                </div>
+                            )}
+                            {errors.featured_image && <p className="mt-1 text-sm text-red-400">{errors.featured_image}</p>}
+                        </div>
 
-                    {/* Status */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Status <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        >
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                            <option value="archived">Archived</option>
-                        </select>
-                        {errors.status && <p className="mt-1 text-sm text-red-600">{errors.status}</p>}
-                    </div>
+                        {/* Status */}
+                        <div>
+                            <label className={labelClass}>
+                                Status <span className="text-red-400">*</span>
+                            </label>
+                            <select
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                                className={`${inputClass} cursor-pointer`}
+                            >
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                            {errors.status && <p className="mt-1 text-sm text-red-400">{errors.status}</p>}
+                        </div>
 
-                    {/* Publish Date */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Publish Date (Optional)
-                        </label>
-                        <input
-                            type="datetime-local"
-                            value={publishedAt}
-                            onChange={(e) => setPublishedAt(e.target.value)}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        {errors.published_at && <p className="mt-1 text-sm text-red-600">{errors.published_at}</p>}
-                    </div>
+                        {/* Publish Date */}
+                        <div>
+                            <label className={labelClass}>Publish Date (Optional)</label>
+                            <input
+                                type="datetime-local"
+                                value={publishedAt}
+                                onChange={(e) => setPublishedAt(e.target.value)}
+                                className={inputClass}
+                            />
+                            {errors.published_at && <p className="mt-1 text-sm text-red-400">{errors.published_at}</p>}
+                        </div>
 
-                    {/* Meta Description */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Meta Description (Optional)
-                        </label>
-                        <textarea
-                            value={metaDescription}
-                            onChange={(e) => setMetaDescription(e.target.value)}
-                            rows={2}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        {errors.meta_description && <p className="mt-1 text-sm text-red-600">{errors.meta_description}</p>}
-                    </div>
+                        {/* Meta Description */}
+                        <div>
+                            <label className={labelClass}>Meta Description (Optional)</label>
+                            <textarea
+                                value={metaDescription}
+                                onChange={(e) => setMetaDescription(e.target.value)}
+                                rows={2}
+                                className={inputClass}
+                            />
+                            {errors.meta_description && <p className="mt-1 text-sm text-red-400">{errors.meta_description}</p>}
+                        </div>
 
-                    {/* Meta Keywords */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Meta Keywords (Optional)
-                        </label>
-                        <input
-                            type="text"
-                            value={metaKeywords}
-                            onChange={(e) => setMetaKeywords(e.target.value)}
-                            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="comma, separated, keywords"
-                        />
-                        {errors.meta_keywords && <p className="mt-1 text-sm text-red-600">{errors.meta_keywords}</p>}
-                    </div>
+                        {/* Meta Keywords */}
+                        <div>
+                            <label className={labelClass}>Meta Keywords (Optional)</label>
+                            <input
+                                type="text"
+                                value={metaKeywords}
+                                onChange={(e) => setMetaKeywords(e.target.value)}
+                                className={inputClass}
+                                placeholder="comma, separated, keywords"
+                            />
+                            {errors.meta_keywords && <p className="mt-1 text-sm text-red-400">{errors.meta_keywords}</p>}
+                        </div>
 
-                    {/* Submit */}
-                    <div className="flex gap-4 pt-4">
-                        <button
-                            type="submit"
-                            disabled={processing}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50"
-                        >
-                            {processing ? 'Updating...' : 'Update Post'}
-                        </button>
+                        {/* Submit */}
+                        <div className="flex gap-4 pt-4">
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="px-8 py-2.5 bg-white text-black rounded-full font-medium text-sm hover:bg-white/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {processing ? 'Updating...' : 'Update Post'}
+                            </button>
 
-                        <Link
-                            href="/dashboard"
-                            className="px-6 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition"
-                        >
-                            Cancel
-                        </Link>
-                    </div>
-                </form>
+                            <Link
+                                href="/dashboard"
+                                className="px-8 py-2.5 border border-white/10 text-white/60 rounded-full font-medium text-sm hover:bg-white/5 hover:text-white transition-all duration-300"
+                            >
+                                Cancel
+                            </Link>
+                        </div>
+                    </motion.form>
+                </motion.div>
             </div>
         </SiteLayout>
     );
