@@ -160,7 +160,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
             </motion.nav>
 
             {/* Main Content */}
-            <main>{children}</main>
+            <main className="pt-16">{children}</main>
 
             {/* --- FOOTER --- */}
             <footer className="border-t border-white/10 bg-black">
