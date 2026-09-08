@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, usePage, Head } from '@inertiajs/react';
 import { format } from 'date-fns';
 import SiteLayout from '@/layouts/site-layout';
@@ -32,7 +31,10 @@ const BlogShow = ({ post }: BlogShowProps) => {
 
     const siteTitle = 'FzlxTech';
     const pageTitle = `${post.title} | ${siteTitle}`;
-    const pageDescription = post.meta_description || post.excerpt || `Read "${post.title}" on FzlxTech blog about web development, Laravel, React, and system architecture.`;
+    const pageDescription =
+        post.meta_description ||
+        post.excerpt ||
+        `Read "${post.title}" on FzlxTech blog about web development, Laravel, React, and system architecture.`;
 
     return (
         <SiteLayout>
@@ -47,113 +49,110 @@ const BlogShow = ({ post }: BlogShowProps) => {
                 <meta name="twitter:title" content={pageTitle} />
                 <meta name="twitter:description" content={pageDescription} />
             </Head>
-            <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                {/* Back to blog link */}
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4 }}
-                >
-                    <Link
-                        href="/blog"
-                        className="inline-flex items-center gap-2 text-white/40 hover:text-white mb-10 transition-colors group"
+            <div className="newsprint-texture">
+                <div className="mx-auto max-w-screen-xl px-4 py-10">
+                    <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
                     >
-                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                        Back to Blog
-                    </Link>
-                </motion.div>
+                        <Link
+                            href="/blog"
+                            className="inline-flex min-h-[44px] items-center gap-2 font-news-mono text-xs uppercase tracking-widest underline-offset-4 decoration-2 hover:text-[#CC0000] hover:underline"
+                        >
+                            <ArrowLeft className="h-4 w-4" strokeWidth={1.5} />
+                            Back to the Dispatch
+                        </Link>
+                    </motion.div>
 
-                <motion.article
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    className="rounded-2xl border border-white/5 bg-white/[0.01] overflow-hidden"
-                >
-                    {/* Featured Image */}
-                    {post.featured_image && (
-                        <div className="w-full h-64 md:h-96 overflow-hidden bg-white/5">
-                            <img
-                                src={`/storage/${post.featured_image}`}
-                                alt={post.title}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                    )}
+                    <motion.article
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, ease: 'easeOut', delay: 0.05 }}
+                        className="mx-auto mt-6 max-w-4xl border border-[#111111] bg-[#F9F9F7]"
+                    >
+                        {post.featured_image && (
+                            <figure className="border-b border-[#111111]">
+                                <img
+                                    src={`/storage/${post.featured_image}`}
+                                    alt={post.title}
+                                    className="max-h-[480px] w-full object-cover grayscale"
+                                />
+                                <figcaption className="border-t border-[#E5E5E0] px-4 py-2 font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                    Fig. 2.1 &mdash; {post.title}
+                                </figcaption>
+                            </figure>
+                        )}
 
-                    <div className="p-6 md:p-10">
-                        {/* Header */}
-                        <header className="mb-8">
-                            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight leading-tight">
+                        <div className="p-6 sm:p-10">
+                            <p className="font-news-mono text-[11px] uppercase tracking-widest text-[#CC0000]">
+                                The Dispatch &mdash; Filed {format(new Date(post.published_at), 'MMMM d, yyyy')}
+                            </p>
+                            <h1 className="font-display mt-3 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">
                                 {post.title}
                             </h1>
 
-                            <div className="flex flex-wrap items-center gap-4 text-white/30 text-sm">
+                            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 border-y border-[#111111] py-2.5 font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                <span>By {post.user?.name || 'Staff Writer'}</span>
+                                <span className="text-[#CC0000]">&#x25A0;</span>
                                 <time dateTime={post.published_at}>
                                     {format(new Date(post.published_at), 'MMMM d, yyyy')}
                                 </time>
-                                <span>•</span>
-                                <span>By {post.user?.name || 'Anonymous'}</span>
                                 {post.views_count !== undefined && (
                                     <>
-                                        <span>•</span>
+                                        <span className="text-[#CC0000]">&#x25A0;</span>
                                         <span className="inline-flex items-center gap-1">
-                                            <Eye className="w-3.5 h-3.5" />
+                                            <Eye className="h-3.5 w-3.5" strokeWidth={1.5} />
                                             {post.views_count} view{post.views_count !== 1 ? 's' : ''}
                                         </span>
                                     </>
                                 )}
                             </div>
 
-                            {/* Tags */}
                             {post.meta_keywords && (
-                                <div className="flex flex-wrap gap-2 mt-5">
+                                <div className="mt-4 flex flex-wrap gap-2">
                                     {post.meta_keywords.split(',').map((keyword: string, idx: number) => (
                                         <span
                                             key={idx}
-                                            className="px-3 py-1 bg-white/5 text-white/40 text-sm rounded-full border border-white/5"
+                                            className="border border-[#111111] px-2.5 py-1 font-news-mono text-[11px] uppercase tracking-widest"
                                         >
                                             {keyword.trim()}
                                         </span>
                                     ))}
                                 </div>
                             )}
-                        </header>
 
-                        {/* Meta Description */}
-                        {post.meta_description && (
-                            <p className="text-lg text-white/40 border-l border-white/20 pl-5 py-2 mb-10 italic leading-relaxed">
-                                {post.meta_description}
-                            </p>
-                        )}
+                            {post.meta_description && (
+                                <p className="mt-8 border-y-4 border-double border-[#111111] py-4 font-body text-lg italic leading-relaxed">
+                                    {post.meta_description}
+                                </p>
+                            )}
 
-                        {/* Content */}
-                        <div
-                            className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-white/60 prose-a:text-white prose-a:decoration-white/30 hover:prose-a:text-white/80 prose-strong:text-white/80 prose-code:text-white/60 prose-code:bg-white/5 prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-img:rounded-xl prose-img:border prose-img:border-white/5"
-                            dangerouslySetInnerHTML={{ __html: post.content }}
-                        />
-                    </div>
-                </motion.article>
+                            <div
+                                className="newsprint-prose mt-8 text-[15px]"
+                                dangerouslySetInnerHTML={{ __html: post.content }}
+                            />
 
-                {/* Admin Actions */}
-                {auth?.user && (post.user_id === auth.user.id || auth.user.isAdmin) && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="mt-8 flex gap-4 items-center"
-                    >
-                        <Link
-                            href={`/blog/posts/${post.slug}/edit`}
-                            className="px-5 py-2.5 bg-white text-black rounded-full font-medium text-sm hover:bg-white/90 transition-all duration-300"
-                        >
-                            Edit Post
-                        </Link>
-
-                        <div className="px-5 py-2.5 bg-white/5 text-white/40 rounded-full text-sm border border-white/5">
-                            Status: <span className="font-semibold capitalize text-white/60">{post.status}</span>
+                            <div className="py-6 text-center font-display text-xl tracking-[0.5em] text-neutral-400">
+                                &#x2727; &#x2727; &#x2727;
+                            </div>
                         </div>
-                    </motion.div>
-                )}
+                    </motion.article>
+
+                    {auth?.user && (post.user_id === auth.user.id || auth.user.isAdmin) && (
+                        <div className="mx-auto mt-6 flex max-w-4xl flex-wrap items-center gap-3">
+                            <Link
+                                href={`/blog/posts/${post.slug}/edit`}
+                                className="inline-flex min-h-[44px] items-center border border-[#111111] bg-[#111111] px-5 font-news-sans text-xs font-semibold uppercase tracking-widest text-[#F9F9F7] transition-all duration-200 hover:bg-[#F9F9F7] hover:text-[#111111]"
+                            >
+                                Edit Story
+                            </Link>
+                            <div className="inline-flex min-h-[44px] items-center border border-[#111111] px-5 font-news-mono text-[11px] uppercase tracking-widest">
+                                Status: <span className="ml-1 font-bold capitalize">{post.status}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </SiteLayout>
     );

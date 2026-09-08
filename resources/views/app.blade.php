@@ -81,7 +81,6 @@
             },
             "contactPoint": {
                 "@@type": "ContactPoint",
-                "telephone": "+60178016870",
                 "contactType": "customer service",
                 "email": "faizul.ramir@gmail.com",
                 "availableLanguage": ["English", "Malay"]

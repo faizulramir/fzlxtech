@@ -1,404 +1,442 @@
-import React from 'react';
 import { Link } from '@inertiajs/react';
-import { Code, Database, Smartphone, Layout, Mail, Phone, Linkedin, ArrowDown, Sparkles, ExternalLink, ChevronRight } from 'lucide-react';
+import { Code, Database, Smartphone, Layout, Mail, Linkedin, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SiteLayout from '@/layouts/site-layout';
 
 // --- DATA FROM RESUME ---
 const portfolioData = {
     personal: {
-        name: "Muhamad Faizul Bin Roni Amir",
-        title: "Super Web Developer & System Architect",
-        phone: "60178016870",
-        email: "faizul.ramir@gmail.com",
-        location: "Shah Alam, Selangor, Malaysia",
-        linkedin: "https://linkedin.com/in/faizul-roni-amir-5009a4197",
-        summary: "Results-driven Software Developer with over 5 years of experience building scalable, high-performance web and mobile solutions. Specializing in PHP, Laravel, and Cross-platform applications, I help businesses digitize workflows and improve operational efficiency."
+        name: 'Muhamad Faizul Bin Roni Amir',
+        title: 'Super Web Developer & System Architect',
+        email: 'faizul.ramir@gmail.com',
+        location: 'Shah Alam, Selangor, Malaysia',
+        linkedin: 'https://linkedin.com/in/faizul-roni-amir-5009a4197',
+        summary:
+            'Results-driven Software Developer with over 5 years of experience building scalable, high-performance web and mobile solutions. Specializing in PHP, Laravel, and cross-platform applications, I help businesses digitize workflows and improve operational efficiency.',
     },
     services: [
         {
-            title: "Enterprise Web Systems",
-            description: "Custom dashboards, CRMs, and management systems built with Laravel & PHP. Secure, scalable, and designed for complex business logic.",
-            icon: <Database className="w-6 h-6" />
+            num: '01',
+            title: 'Enterprise Web Systems',
+            description:
+                'Custom dashboards, CRMs, and management systems built with Laravel & PHP. Secure, scalable, and designed for complex business logic.',
+            icon: Database,
         },
         {
-            title: "Cross-Platform Apps",
-            description: "Desktop and mobile applications using Electron.js and Ionic.js. Build once, deploy everywhere to save development costs.",
-            icon: <Smartphone className="w-6 h-6" />
+            num: '02',
+            title: 'Cross-Platform Apps',
+            description:
+                'Desktop and mobile applications using Electron.js and Ionic.js. Build once, deploy everywhere to save development costs.',
+            icon: Smartphone,
         },
         {
-            title: "Modern Frontend Interface",
-            description: "Interactive and responsive user interfaces using React.js. Ensuring a smooth user experience for your customers.",
-            icon: <Layout className="w-6 h-6" />
+            num: '03',
+            title: 'Modern Frontend Interface',
+            description:
+                'Interactive and responsive user interfaces using React.js. Ensuring a smooth user experience for your customers.',
+            icon: Layout,
         },
         {
-            title: "System Architecture",
-            description: "Consultation on database design (MySQL), API integration, and agile development workflows to ensure project success.",
-            icon: <Code className="w-6 h-6" />
-        }
+            num: '04',
+            title: 'System Architecture',
+            description:
+                'Consultation on database design (MySQL), API integration, and agile development workflows to ensure project success.',
+            icon: Code,
+        },
     ],
     experience: [
         {
-            company: "MyORI Services Sdn Bhd",
-            role: "Lead Web Developer",
-            period: "08/2021 - Present",
-            description: "Leading end-to-end development of digital solutions. Developed internal tools using Laravel, React, and Electron.js to improve team productivity and data accuracy."
+            num: '01',
+            company: 'MyORI Services Sdn Bhd',
+            role: 'Lead Web Developer',
+            period: '08/2021 — Present',
+            description:
+                'Leading end-to-end development of digital solutions. Developed internal tools using Laravel, React, and Electron.js to improve team productivity and data accuracy.',
         },
         {
-            company: "HeiTech Padu Berhad",
-            role: "Software Developer",
-            period: "02/2019 - 08/2021",
-            description: "Developed enterprise software for government and corporate clients. Focused on secure system designs and agile delivery."
-        }
+            num: '02',
+            company: 'HeiTech Padu Berhad',
+            role: 'Software Developer',
+            period: '02/2019 — 08/2021',
+            description:
+                'Developed enterprise software for government and corporate clients. Focused on secure system designs and agile delivery.',
+        },
     ],
     techStack: [
-        { name: "Laravel", image: "/images/laravel.png" },
-        { name: "PHP", image: "/images/php.png" },
-        { name: "React.js", image: "/images/react.png" },
-        { name: "Electron.js", image: "/images/electron.png" },
-        { name: "Ionic.js", image: "/images/ionic.png" },
-        { name: "Flutter", image: "/images/flutter.png" },
-        { name: "JavaScript", image: "/images/javascript.png" },
-        { name: "TypeScript", image: "/images/typescript.png" },
-    ]
+        { name: 'Laravel', image: '/images/laravel.png' },
+        { name: 'PHP', image: '/images/php.png' },
+        { name: 'React.js', image: '/images/react.png' },
+        { name: 'Electron.js', image: '/images/electron.png' },
+        { name: 'Ionic.js', image: '/images/ionic.png' },
+        { name: 'Flutter', image: '/images/flutter.png' },
+        { name: 'JavaScript', image: '/images/javascript.png' },
+        { name: 'TypeScript', image: '/images/typescript.png' },
+    ],
 };
 
-// Reusable animation variants
-const fadeIn = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
+const reveal = {
+    hidden: { opacity: 0, y: 12 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: 'easeOut' as const } },
 };
 
-const slideUp = {
-    hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const } },
-};
-
-const staggerContainer = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-};
-
-const cardVariant = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-};
+const SectionLabel = ({ index, title, blurb }: { index: string; title: string; blurb?: string }) => (
+    <div className="mb-10 border-b-4 border-double border-[#111111] pb-6">
+        <p className="font-news-mono text-xs uppercase tracking-widest text-[#CC0000]">Sec. {index}</p>
+        <h2 className="font-display mt-2 text-4xl font-black tracking-tight lg:text-5xl">{title}</h2>
+        {blurb && <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-neutral-600">{blurb}</p>}
+    </div>
+);
 
 const App = () => {
     return (
         <SiteLayout>
-            {/* --- HERO SECTION --- */}
-            <section className="relative min-h-screen flex items-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto overflow-hidden">
-                {/* Background grid effect */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,black,transparent)]" />
+            {/* --- FRONT PAGE / HERO --- */}
+            <section className="newsprint-texture border-b border-[#111111]">
+                <div className="mx-auto max-w-screen-xl px-4 py-10 lg:py-14">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-y border-[#111111] py-2 font-news-mono text-[11px] uppercase tracking-widest">
+                        <span className="bg-[#CC0000] px-2 py-0.5 font-bold text-white">Exclusive</span>
+                        <span className="hidden sm:inline">Morning Edition &mdash; No. 001</span>
+                        <span>Shah Alam, Malaysia</span>
+                    </div>
 
-                <div className="relative w-full pt-32 pb-20 flex flex-col-reverse md:flex-row items-center gap-12">
-                    {/* Text Content */}
-                    <motion.div
+                    <motion.h1
                         initial="hidden"
                         animate="visible"
-                        variants={staggerContainer}
-                        className="md:w-3/5"
+                        variants={reveal}
+                        className="font-display mt-8 text-center text-5xl font-black leading-[0.9] tracking-tighter sm:text-6xl lg:text-8xl"
                     >
-                        <motion.div variants={slideUp}>
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm text-white/50 mb-6">
-                                <Sparkles className="w-3.5 h-3.5" />
-                                Available for projects
+                        Building Scalable
+                        <br />
+                        Digital Solutions
+                    </motion.h1>
+                    <p className="mt-4 text-center font-news-sans text-xs uppercase tracking-[0.25em] text-neutral-600">
+                        Laravel &bull; React &bull; Electron &mdash; Enterprise Software, In Print
+                    </p>
+
+                    <div className="mt-10 grid grid-cols-12 gap-0 border border-[#111111]">
+                        {/* Lede column */}
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={reveal}
+                            className="col-span-12 border-b border-[#111111] p-6 sm:p-8 lg:col-span-8 lg:border-b-0 lg:border-r"
+                        >
+                            <p className="font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                By {portfolioData.personal.name} &mdash; Lead Web Developer
+                            </p>
+                            <p className="drop-cap mt-4 text-justify font-body text-base leading-relaxed lg:text-lg">
+                                I help businesses streamline operations with custom software. Specializing in{' '}
+                                <strong>Laravel, React, and Electron.js</strong> to deliver high-performance
+                                enterprise applications &mdash; from internal CRMs to cross-platform desktop and
+                                mobile releases. Every engagement is reported like front-page news: clear scope,
+                                tight deadlines, no filler.
+                            </p>
+                            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                                <Link
+                                    href="#contact"
+                                    className="inline-flex min-h-[44px] items-center justify-center gap-2 border border-[#111111] bg-[#111111] px-6 font-news-sans text-xs font-semibold uppercase tracking-widest text-[#F9F9F7] transition-all duration-200 hover:bg-[#F9F9F7] hover:text-[#111111]"
+                                >
+                                    Commission a Project <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+                                </Link>
+                                <Link
+                                    href="/blog"
+                                    className="inline-flex min-h-[44px] items-center justify-center gap-2 border border-[#111111] bg-transparent px-6 font-news-sans text-xs font-semibold uppercase tracking-widest transition-all duration-200 hover:bg-[#111111] hover:text-[#F9F9F7]"
+                                >
+                                    Read the Dispatch
+                                </Link>
+                                <a
+                                    href={portfolioData.personal.linkedin}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex min-h-[44px] items-center justify-center font-news-sans text-xs font-semibold uppercase tracking-widest underline-offset-4 decoration-2 decoration-[#CC0000] hover:underline"
+                                >
+                                    LinkedIn Record
+                                </a>
+                            </div>
+                            <div className="mt-8 grid grid-cols-3 divide-x divide-[#111111] border-t border-[#111111] pt-4 text-center">
+                                {[
+                                    ['5+', 'Years in Service'],
+                                    ['20+', 'Systems Shipped'],
+                                    ['100%', 'Ink, No Filler'],
+                                ].map(([stat, label]) => (
+                                    <div key={label} className="px-2">
+                                        <p className="font-display text-3xl font-black">{stat}</p>
+                                        <p className="mt-1 font-news-mono text-[10px] uppercase tracking-widest text-neutral-500">
+                                            {label}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
                         </motion.div>
 
-                        <motion.h1
-                            variants={slideUp}
-                            className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-[1.05]"
-                        >
-                            Building
-                            <br />
-                            <span className="text-white/30">Scalable Digital</span>
-                            <br />
-                            Solutions
-                        </motion.h1>
-
-                        <motion.p
-                            variants={slideUp}
-                            className="mt-8 text-lg text-white/40 leading-relaxed max-w-xl"
-                        >
-                            I help businesses streamline operations with custom software.
-                            Specializing in <span className="text-white/60 font-medium">Laravel, React, and Electron.js</span> to deliver high-performance enterprise applications.
-                        </motion.p>
-
-                        <motion.div variants={slideUp} className="mt-10 flex flex-wrap gap-4">
-                            <Link
-                                href="#contact"
-                                className="group px-8 py-3.5 bg-white text-black rounded-full font-medium text-sm hover:bg-white/90 transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] inline-flex items-center gap-2"
-                            >
-                                Let's Build Your Project
-                                <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                            </Link>
-                            <Link
-                                href="/blog"
-                                className="px-8 py-3.5 border border-white/20 text-white/60 rounded-full font-medium text-sm hover:bg-white/5 hover:text-white hover:border-white/30 transition-all duration-300"
-                            >
-                                Read My Blog
-                            </Link>
-                        </motion.div>
-
-                        {/* Scroll indicator */}
+                        {/* Portrait column */}
                         <motion.div
-                            variants={slideUp}
-                            className="mt-16 hidden md:flex items-center gap-3 text-white/20 text-sm"
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={reveal}
+                            className="col-span-12 p-6 sm:p-8 lg:col-span-4"
                         >
-                            <motion.div
-                                animate={{ y: [0, 6, 0] }}
-                                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                            >
-                                <ArrowDown className="w-4 h-4" />
-                            </motion.div>
-                            Scroll to explore
-                        </motion.div>
-                    </motion.div>
-
-                    {/* Photo */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-                        className="md:w-2/5 flex justify-center"
-                    >
-                        <div className="relative">
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/10 to-transparent blur-3xl" />
-                            <div className="relative w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden border border-white/10">
+                            <div className="border border-[#111111] p-2">
                                 <img
                                     src="/dp.jpg"
                                     alt="Muhamad Faizul Bin Roni Amir"
-                                    width="288"
-                                    height="288"
+                                    width="480"
+                                    height="480"
                                     loading="eager"
-                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                                    className="aspect-square w-full object-cover grayscale transition-all duration-200 hover:sepia-[50%]"
                                 />
                             </div>
-                        </div>
-                    </motion.div>
+                            <p className="mt-3 font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                Fig. 1.1 &mdash; The Developer, at his desk.
+                            </p>
+                            <div className="mt-4 border border-[#111111] bg-white/40 p-4">
+                                <p className="font-news-mono text-[11px] uppercase tracking-widest text-[#CC0000]">
+                                    Currently Accepting
+                                </p>
+                                <p className="mt-2 font-body text-sm leading-relaxed">
+                                    Freelance builds &amp; full-time roles. Replies filed within one business day.
+                                </p>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
-            {/* --- ABOUT SECTION --- */}
-            <section id="about" className="py-32 border-t border-white/5">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-100px' }}
-                        variants={staggerContainer}
-                    >
-                        <motion.div variants={slideUp} className="mb-16">
-                            <span className="text-white/30 uppercase tracking-[0.2em] text-xs font-medium">01.</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mt-3">About Me</h2>
-                        </motion.div>
-
-                        <div className="grid md:grid-cols-2 gap-16 items-start">
-                            <motion.div variants={slideUp}>
-                                <p className="text-lg text-white/40 leading-relaxed mb-8">
-                                    {portfolioData.personal.summary}
-                                </p>
-                                <div className="space-y-3 text-white/40">
-                                    {[
-                                        ['Name', portfolioData.personal.name],
-                                        ['Location', portfolioData.personal.location],
-                                        ['Email', portfolioData.personal.email],
-                                        ['Phone', portfolioData.personal.phone],
-                                    ].map(([label, value]) => (
-                                        <div key={label} className="flex gap-4">
-                                            <span className="text-white/20 w-20 flex-shrink-0">{label}</span>
-                                            <span className="text-white/60">{value}</span>
-                                        </div>
-                                    ))}
-                                    <div className="flex gap-4 pt-2">
-                                        <span className="text-white/20 w-20 flex-shrink-0">LinkedIn</span>
-                                        <a href={portfolioData.personal.linkedin} target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-white transition-colors inline-flex items-center gap-1 group">
-                                            linkedin.com/in/faizul-roni-amir
-                                            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        </a>
+            {/* --- THE RECORD / ABOUT --- */}
+            <section id="record" className="border-b border-[#111111]">
+                <div className="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-16">
+                    <SectionLabel
+                        index="02 &mdash; The Record"
+                        title="About the Author"
+                        blurb="Five years of shipping enterprise software for government, corporate, and startup desks."
+                    />
+                    <div className="grid grid-cols-12 gap-8">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={reveal}
+                            className="col-span-12 lg:col-span-7"
+                        >
+                            <p className="drop-cap text-justify font-body text-base leading-relaxed">
+                                {portfolioData.personal.summary}
+                            </p>
+                            <dl className="mt-8 border-t border-[#111111]">
+                                {[
+                                    ['Name', portfolioData.personal.name],
+                                    ['Beat', portfolioData.personal.title],
+                                    ['Bureau', portfolioData.personal.location],
+                                    ['Wire', portfolioData.personal.email],
+                                ].map(([label, value]) => (
+                                    <div
+                                        key={label}
+                                        className="grid grid-cols-3 gap-4 border-b border-[#E5E5E0] py-2.5"
+                                    >
+                                        <dt className="font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                            {label}
+                                        </dt>
+                                        <dd className="col-span-2 font-news-sans text-sm">{value}</dd>
                                     </div>
-                                </div>
-                            </motion.div>
-
-                            <motion.div variants={slideUp}>
-                                <h3 className="text-white font-semibold mb-6 text-sm uppercase tracking-wider">Tech Stack</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {portfolioData.techStack.map((tech, idx) => (
-                                        <motion.span
+                                ))}
+                            </dl>
+                        </motion.div>
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={reveal}
+                            className="col-span-12 lg:col-span-5"
+                        >
+                            <div className="border border-[#111111] p-6">
+                                <h3 className="font-news-mono text-xs uppercase tracking-widest">
+                                    Tools of the Trade
+                                </h3>
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {portfolioData.techStack.map((tech) => (
+                                        <span
                                             key={tech.name}
-                                            initial={{ opacity: 0, scale: 0.8 }}
-                                            whileInView={{ opacity: 1, scale: 1 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: idx * 0.05 }}
-                                            className="px-4 py-2 bg-white/5 text-white/50 rounded-full text-sm border border-white/5 hover:border-white/20 hover:text-white hover:bg-white/10 transition-all duration-300 cursor-default"
+                                            className="border border-[#111111] px-3 py-1.5 font-news-mono text-[11px] uppercase tracking-widest transition-all duration-200 hover:bg-[#111111] hover:text-[#F9F9F7]"
                                         >
                                             {tech.name}
-                                        </motion.span>
+                                        </span>
                                     ))}
                                 </div>
-                            </motion.div>
-                        </div>
-                    </motion.div>
+                                <div className="py-6 text-center font-display text-xl tracking-[0.5em] text-neutral-400">
+                                    &#x2727; &#x2727; &#x2727;
+                                </div>
+                                <p className="text-justify font-body text-sm leading-relaxed text-neutral-600">
+                                    Stack chosen per assignment: Laravel and MySQL for the heavy enterprise
+                                    lifting, React for the front page, Electron and Ionic when one codebase must
+                                    run everywhere.
+                                </p>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
-            {/* --- TECH SCROLL --- */}
-            <section className="py-20 border-t border-white/5 overflow-hidden">
-                <div className="relative">
-                    <div className="flex animate-[scroll_30s_linear_infinite] gap-8 w-max">
-                        {[...portfolioData.techStack, ...portfolioData.techStack, ...portfolioData.techStack].map((tech, idx) => (
-                            <div
-                                key={`${tech.name}-${idx}`}
-                                className="flex items-center gap-3 px-6 py-3 rounded-xl bg-white/[0.02] border border-white/5 flex-shrink-0"
+            {/* --- SERVICES --- */}
+            <section id="services" className="newsprint-texture border-b border-[#111111]">
+                <div className="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-16">
+                    <SectionLabel
+                        index="03 &mdash; Classifieds"
+                        title="Services Offered"
+                        blurb="Four departments, one newsroom. Every engagement ships with documentation and a handover."
+                    />
+                    <div className="grid grid-cols-1 border border-[#111111] md:grid-cols-2">
+                        {portfolioData.services.map((service, idx) => {
+                            const Icon = service.icon;
+                            return (
+                                <motion.article
+                                    key={service.title}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true }}
+                                    variants={reveal}
+                                    className={`hard-shadow-hover group bg-[#F9F9F7] p-6 sm:p-8 ${
+                                        idx % 2 === 0 ? 'md:border-r md:border-[#111111]' : ''
+                                    } ${idx < 2 ? 'border-b border-[#111111]' : ''} ${
+                                        idx > 0 ? 'max-md:border-t max-md:border-[#E5E5E0] max-md:first:border-t-0' : ''
+                                    }`}
+                                >
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div className="flex h-12 w-12 items-center justify-center border border-[#111111] transition-all duration-200 group-hover:bg-[#111111] group-hover:text-[#F9F9F7]">
+                                            <Icon className="h-6 w-6" strokeWidth={1.5} />
+                                        </div>
+                                        <span className="font-news-mono text-xs tracking-widest text-[#CC0000]">
+                                            {service.num}
+                                        </span>
+                                    </div>
+                                    <h3 className="font-display mt-6 text-2xl font-bold lg:text-3xl">
+                                        {service.title}
+                                    </h3>
+                                    <p className="mt-3 text-justify font-body text-sm leading-relaxed text-neutral-600">
+                                        {service.description}
+                                    </p>
+                                    <Link
+                                        href="#contact"
+                                        className="mt-5 inline-flex min-h-[44px] items-center gap-1 font-news-sans text-xs font-semibold uppercase tracking-widest underline-offset-4 decoration-2 decoration-[#CC0000] hover:underline"
+                                    >
+                                        File a request <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.5} />
+                                    </Link>
+                                </motion.article>
+                            );
+                        })}
+                    </div>
+                </div>
+            </section>
+
+            {/* --- EXPERIENCE (inverted) --- */}
+            <section id="experience" className="border-b-4 border-[#111111] bg-[#111111] text-[#F9F9F7]">
+                <div className="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-16">
+                    <div className="mb-10 border-b-4 border-double border-[#F9F9F7] pb-6">
+                        <p className="font-news-mono text-xs uppercase tracking-widest text-[#CC0000]">
+                            Sec. 04 &mdash; Archive
+                        </p>
+                        <h2 className="font-display mt-2 text-4xl font-black tracking-tight lg:text-5xl">
+                            Service Record
+                        </h2>
+                    </div>
+                    <div className="grid grid-cols-12 gap-0 border border-[#F9F9F7]">
+                        {portfolioData.experience.map((exp, idx) => (
+                            <motion.article
+                                key={exp.company}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                variants={reveal}
+                                className={`col-span-12 p-6 sm:p-8 lg:col-span-6 ${
+                                    idx === 0 ? 'lg:border-r lg:border-[#F9F9F7]' : ''
+                                } ${idx === 0 ? 'border-b border-[#F9F9F7] lg:border-b-0' : ''}`}
                             >
-                                <img
-                                    src={tech.image}
-                                    alt={tech.name}
-                                    className="w-8 h-8 object-contain opacity-60"
-                                />
-                                <span className="text-sm text-white/40 whitespace-nowrap">{tech.name}</span>
-                            </div>
+                                <p className="font-display text-5xl font-black text-[#CC0000]">{exp.num}</p>
+                                <p className="mt-4 font-news-mono text-[11px] uppercase tracking-widest text-neutral-400">
+                                    {exp.period}
+                                </p>
+                                <h3 className="font-display mt-2 text-2xl font-bold">{exp.role}</h3>
+                                <p className="mt-1 font-news-sans text-sm font-semibold uppercase tracking-widest">
+                                    {exp.company}
+                                </p>
+                                <p className="mt-4 text-justify font-body text-sm leading-relaxed text-neutral-400">
+                                    {exp.description}
+                                </p>
+                            </motion.article>
                         ))}
                     </div>
-                    {/* Fade edges */}
-                    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent pointer-events-none z-10" />
-                    <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-r from-transparent to-black pointer-events-none z-10" />
-                </div>
-            </section>
 
-            {/* --- SERVICES SECTION --- */}
-            <section id="services" className="py-32 border-t border-white/5">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-100px' }}
-                        variants={staggerContainer}
-                    >
-                        <motion.div variants={slideUp} className="mb-16">
-                            <span className="text-white/30 uppercase tracking-[0.2em] text-xs font-medium">02.</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mt-3">Services</h2>
-                        </motion.div>
-
-                        <motion.div variants={staggerContainer} className="grid md:grid-cols-2 gap-6">
-                            {portfolioData.services.map((service, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    variants={cardVariant}
-                                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                                    className="group p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-all duration-500"
-                                >
-                                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white/40 group-hover:text-white group-hover:bg-white/10 transition-all duration-500 mb-6">
-                                        {service.icon}
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
-                                    <p className="text-white/30 leading-relaxed text-sm">{service.description}</p>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* --- EXPERIENCE SECTION --- */}
-            <section id="experience" className="py-32 border-t border-white/5">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-100px' }}
-                        variants={staggerContainer}
-                    >
-                        <motion.div variants={slideUp} className="mb-16">
-                            <span className="text-white/30 uppercase tracking-[0.2em] text-xs font-medium">03.</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mt-3">Experience</h2>
-                        </motion.div>
-
-                        <div className="space-y-12">
-                            {portfolioData.experience.map((exp, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    variants={cardVariant}
-                                    className="relative pl-8 border-l border-white/10 hover:border-white/30 transition-colors duration-500"
-                                >
-                                    <div className="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full bg-white/20 group-hover:bg-white transition-colors duration-500" />
-                                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
-                                        <h3 className="text-xl font-semibold text-white">{exp.role}</h3>
-                                        <span className="text-sm text-white/30 whitespace-nowrap">{exp.period}</span>
-                                    </div>
-                                    <p className="text-white/50 font-medium mb-3">{exp.company}</p>
-                                    <p className="text-white/30 leading-relaxed text-sm">{exp.description}</p>
-                                </motion.div>
+                    {/* Press plate strip */}
+                    <div className="mt-8 overflow-hidden border border-[#F9F9F7]/30" aria-label="Technology">
+                        <div className="ticker-track items-center py-3">
+                            {[0, 1].map((copy) => (
+                                <div key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1}>
+                                    {[...portfolioData.techStack, ...portfolioData.techStack].map((tech, i) => (
+                                        <span
+                                            key={`${copy}-${tech.name}-${i}`}
+                                            className="mx-3 flex items-center gap-2 whitespace-nowrap border border-[#F9F9F7]/30 px-4 py-2"
+                                        >
+                                            <img
+                                                src={tech.image}
+                                                alt=""
+                                                aria-hidden
+                                                loading="lazy"
+                                                className="h-5 w-5 object-contain grayscale"
+                                            />
+                                            <span className="font-news-mono text-[11px] uppercase tracking-widest">
+                                                {tech.name}
+                                            </span>
+                                        </span>
+                                    ))}
+                                </div>
                             ))}
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
-            {/* --- CONTACT SECTION --- */}
-            <section id="contact" className="py-32 border-t border-white/5 relative overflow-hidden">
-                {/* Background accent */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.04)_0%,transparent_70%)]" />
-
-                <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-100px' }}
-                        variants={staggerContainer}
-                    >
-                        <motion.div variants={slideUp}>
-                            <span className="text-white/30 uppercase tracking-[0.2em] text-xs font-medium">04.</span>
-                            <h2 className="text-4xl md:text-6xl font-bold text-white mt-3 mb-6">Let's Work Together</h2>
-                            <p className="text-lg text-white/30 mb-12 max-w-xl mx-auto">
-                                I'm available for freelance projects and full-time opportunities. Let's build something great.
+            {/* --- CONTACT / NOTICES --- */}
+            <section id="contact" className="newsprint-texture">
+                <div className="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-16">
+                    <SectionLabel index="05 &mdash; Notices" title="Place a Notice" />
+                    <div className="grid grid-cols-12 gap-8">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={reveal}
+                            className="col-span-12 border-4 border-[#111111] p-8 text-center lg:col-span-8 lg:col-start-3"
+                        >
+                            <p className="font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                To the Editor &mdash; Re: Your Next Project
+                            </p>
+                            <h3 className="font-display mx-auto mt-3 max-w-xl text-3xl font-black leading-tight lg:text-4xl">
+                                Have a story worth building? Let&rsquo;s put it on the front page.
+                            </h3>
+                            <div className="py-6 text-center font-display text-xl tracking-[0.5em] text-neutral-400">
+                                &#x2727; &#x2727; &#x2727;
+                            </div>
+                            <div className="flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
+                                <a
+                                    href={`mailto:${portfolioData.personal.email}`}
+                                    className="inline-flex min-h-[44px] items-center justify-center gap-2 border border-[#111111] bg-[#111111] px-6 font-news-sans text-xs font-semibold uppercase tracking-widest text-[#F9F9F7] transition-all duration-200 hover:bg-[#F9F9F7] hover:text-[#111111]"
+                                >
+                                    <Mail className="h-4 w-4" strokeWidth={1.5} /> Send a Wire
+                                </a>
+                                <a
+                                    href={portfolioData.personal.linkedin}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex min-h-[44px] items-center justify-center gap-2 border border-[#111111] px-6 font-news-sans text-xs font-semibold uppercase tracking-widest transition-all duration-200 hover:bg-[#111111] hover:text-[#F9F9F7]"
+                                >
+                                    <Linkedin className="h-4 w-4" strokeWidth={1.5} /> LinkedIn
+                                </a>
+                            </div>
+                            <p className="mt-6 font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                Replies filed within one business day
                             </p>
                         </motion.div>
-
-                        <motion.div
-                            variants={staggerContainer}
-                            className="flex flex-col md:flex-row justify-center items-center gap-4"
-                        >
-                            {[
-                                {
-                                    href: `tel:${portfolioData.personal.phone}`,
-                                    icon: <Phone className="w-4 h-4" />,
-                                    label: `Call: ${portfolioData.personal.phone}`,
-                                    primary: true,
-                                },
-                                {
-                                    href: `mailto:${portfolioData.personal.email}`,
-                                    icon: <Mail className="w-4 h-4" />,
-                                    label: 'Send Email',
-                                },
-                                {
-                                    href: portfolioData.personal.linkedin,
-                                    icon: <Linkedin className="w-4 h-4" />,
-                                    label: 'LinkedIn',
-                                    external: true,
-                                },
-                            ].map((item) => (
-                                <motion.div key={item.label} variants={cardVariant}>
-                                    <a
-                                        href={item.href}
-                                        target={item.external ? '_blank' : undefined}
-                                        rel={item.external ? 'noopener noreferrer' : undefined}
-                                        className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-medium text-sm transition-all duration-300 ${
-                                            item.primary
-                                                ? 'bg-white text-black hover:bg-white/90 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]'
-                                                : 'border border-white/10 text-white/60 hover:text-white hover:border-white/20 hover:bg-white/5'
-                                        }`}
-                                    >
-                                        {item.icon}
-                                        {item.label}
-                                    </a>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </motion.div>
+                    </div>
                 </div>
             </section>
         </SiteLayout>
