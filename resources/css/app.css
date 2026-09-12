@@ -335,3 +335,163 @@
         margin-bottom: 1.25rem;
     }
 }
+
+/* ---------- Newsprint dark mode (unlayered so it wins over utilities) ----------
+   Palette swap: paper #F9F9F7 <-> ink #111111. Scoped to .newsprint so the
+   admin (shadcn) theme is untouched. Attribute selectors avoid Tailwind's
+   class-escaping fragility, including opacity modifiers like /30. */
+.dark .newsprint {
+    background-color: #161511;
+    color: #edeae0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23edeae0' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.dark .newsprint ::selection {
+    background: #edeae0;
+    color: #161511;
+}
+
+.dark .newsprint-texture::before {
+    background-image:
+        linear-gradient(0deg, transparent 98%, rgba(255, 255, 255, 0.04) 100%),
+        linear-gradient(90deg, transparent 98%, rgba(255, 255, 255, 0.04) 100%);
+}
+
+.dark .newsprint .hard-shadow-hover:hover {
+    box-shadow: 4px 4px 0 0 #edeae0;
+}
+
+/* Paper <-> ink swap (variant-prefixed classes like hover:/group-hover:/file:
+   are excluded here — they have their own state rules below) */
+.dark .newsprint [class*='bg-[#F9F9F7]']:not([class*='hover:bg-[#F9F9F7]']) {
+    background-color: #161511;
+}
+.dark .newsprint [class*='text-[#111111]']:not([class*='hover:text-[#111111]']) {
+    color: #edeae0;
+}
+.dark .newsprint [class*='border-[#111111]']:not([class*='hover:border-[#111111]']):not([class*='file:border-[#111111]']) {
+    border-color: #edeae0;
+}
+.dark .newsprint [class*='divide-[#111111]'] > :not([hidden]) ~ :not([hidden]) {
+    border-color: #edeae0;
+}
+.dark .newsprint [class*='bg-[#111111]']:not([class*='hover:bg-[#111111]']):not([class*='group-hover:bg-[#111111]']):not([class*='file:bg-[#111111]']) {
+    background-color: #edeae0;
+}
+.dark .newsprint [class*='text-[#F9F9F7]']:not([class*='hover:text-[#F9F9F7]']):not([class*='group-hover:text-[#F9F9F7]']):not([class*='file:text-[#F9F9F7]']) {
+    color: #161511;
+}
+.dark .newsprint [class*='border-[#F9F9F7]'] {
+    border-color: #161511;
+}
+.dark .newsprint [class*='border-[#F9F9F7]/30'] {
+    border-color: rgb(237 234 224 / 0.3);
+}
+.dark .newsprint [class*='border-[#E5E5E0]'] {
+    border-color: #33312a;
+}
+
+/* Button + tag hover states follow the swap */
+.dark .newsprint [class*='hover:bg-[#111111]']:hover {
+    background-color: #edeae0;
+}
+.dark .newsprint [class*='hover:text-[#F9F9F7]']:hover {
+    color: #161511;
+}
+.dark .newsprint [class*='hover:bg-[#F9F9F7]']:hover {
+    background-color: #161511;
+}
+.dark .newsprint [class*='hover:text-[#111111]']:hover {
+    color: #edeae0;
+}
+.dark .newsprint [class*='hover:border-[#111111]']:hover {
+    border-color: #edeae0;
+}
+.dark .newsprint .group:hover [class*='group-hover:bg-[#111111]'] {
+    background-color: #edeae0;
+}
+.dark .newsprint .group:hover [class*='group-hover:text-[#F9F9F7]'] {
+    color: #161511;
+}
+.dark .newsprint [class*='focus-visible:bg-[#F0F0F0]']:focus-visible {
+    background-color: #24231d;
+}
+.dark .newsprint [class*='file:bg-[#111111]']::file-selector-button {
+    background-color: #edeae0;
+}
+.dark .newsprint [class*='file:text-[#F9F9F7]']::file-selector-button {
+    color: #161511;
+}
+.dark .newsprint [class*='file:border-[#111111]']::file-selector-button {
+    border-color: #161511;
+}
+
+/* Secondary text + fills */
+.dark .newsprint [class*='text-neutral-600'] {
+    color: #bdbaa9;
+}
+.dark .newsprint [class*='text-neutral-500'] {
+    color: #a09d8d;
+}
+.dark .newsprint [class*='text-neutral-400'] {
+    color: #8e8b7d;
+}
+.dark .newsprint [class*='placeholder:text-neutral-500']::placeholder {
+    color: #a09d8d;
+}
+.dark .newsprint [class*='hover:bg-neutral-100']:hover {
+    background-color: #24231d;
+}
+.dark .newsprint [class*='bg-white/40'] {
+    background-color: rgb(237 234 224 / 0.08);
+}
+
+/* Secondary text sitting on inverted (light-in-dark) panels stays dark */
+.dark .newsprint [class*='bg-[#111111]']:not([class*='hover:bg-[#111111]']):not([class*='group-hover:bg-[#111111]']) [class*='text-neutral-600'],
+.dark .newsprint [class*='bg-[#111111]']:not([class*='hover:bg-[#111111]']):not([class*='group-hover:bg-[#111111]']) [class*='text-neutral-500'],
+.dark .newsprint [class*='bg-[#111111]']:not([class*='hover:bg-[#111111]']):not([class*='group-hover:bg-[#111111]']) [class*='text-neutral-400'] {
+    color: #57554c;
+}
+
+/* Editorial red brightened for dark paper (placed after text rules) */
+.dark .newsprint [class*='text-[#CC0000]'] {
+    color: #e5484d;
+}
+.dark .newsprint [class*='hover:text-[#CC0000]']:hover {
+    color: #e5484d;
+}
+.dark .newsprint [class*='decoration-[#CC0000]'] {
+    text-decoration-color: #e5484d;
+}
+.dark .newsprint [class*='bg-[#CC0000]'] {
+    background-color: #e5484d;
+}
+.dark .newsprint [class*='bg-[#CC0000]'],
+.dark .newsprint [class*='bg-[#CC0000]'] * {
+    color: #ffffff;
+}
+.dark .newsprint [class*='text-white'] {
+    color: #161511;
+}
+/* Red badges keep white text (after the text-white rule) */
+.dark .newsprint [class*='bg-[#CC0000]'][class*='text-white'] {
+    color: #ffffff;
+}
+
+/* Long-form prose on dark paper */
+.dark .newsprint-prose {
+    color: #edeae0;
+}
+.dark .newsprint-prose a {
+    color: #edeae0;
+    text-decoration-color: #e5484d;
+}
+.dark .newsprint-prose blockquote {
+    border-left-color: #edeae0;
+}
+.dark .newsprint-prose :not(pre) > code {
+    background: #2a2922;
+}
+.dark .newsprint-prose img {
+    border-color: #edeae0;
+}

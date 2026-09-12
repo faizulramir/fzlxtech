@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Link, Head, usePage } from '@inertiajs/react';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from '@/components/theme-toggle';
 
 interface SiteLayoutProps {
     children: React.ReactNode;
@@ -11,8 +12,9 @@ const navLinks = [
     { href: '/', label: 'Front Page', num: '01' },
     { href: '/#record', label: 'The Record', num: '02' },
     { href: '/#services', label: 'Services', num: '03' },
-    { href: '/#experience', label: 'Experience', num: '04' },
-    { href: '/blog', label: 'Dispatch', num: '05' },
+    { href: '/#projects', label: 'Projects', num: '04' },
+    { href: '/#experience', label: 'Experience', num: '05' },
+    { href: '/blog', label: 'Dispatch', num: '06' },
 ];
 
 const tickerItems = [
@@ -112,6 +114,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
                         F<span className="text-[#CC0000]">x</span>T
                     </Link>
                     <div className="flex items-center gap-2">
+                        <ThemeToggle className="hidden md:flex" />
                         <Link
                             href="/#contact"
                             className="hidden min-h-[44px] items-center border border-[#111111] bg-[#111111] px-5 font-news-sans text-xs font-semibold uppercase tracking-widest text-[#F9F9F7] transition-all duration-200 hover:border-[#111111] hover:bg-[#F9F9F7] hover:text-[#111111] md:inline-flex"
@@ -150,6 +153,12 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => {
                                         <span className="text-neutral-500">{link.num}</span>
                                     </Link>
                                 ))}
+                                <div className="flex min-h-[44px] items-center justify-between py-2">
+                                    <span className="font-news-mono text-xs uppercase tracking-widest text-neutral-500">
+                                        Theme
+                                    </span>
+                                    <ThemeToggle />
+                                </div>
                                 <Link
                                     href="/#contact"
                                     onClick={() => setIsMenuOpen(false)}

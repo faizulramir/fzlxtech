@@ -328,12 +328,103 @@ const App = () => {
                 </div>
             </section>
 
+            {/* --- PROJECTS (sealed files) --- */}
+            <section id="projects" className="border-b border-[#111111]">
+                <div className="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-16">
+                    <SectionLabel
+                        index="04 &mdash; Selected Work"
+                        title="The Sealed Files"
+                        blurb="Every client engagement is filed under strict confidence. No names, no screenshots — the work speaks through referrals."
+                    />
+                    <div className="grid grid-cols-12 gap-8">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={reveal}
+                            className="col-span-12 lg:col-span-7"
+                        >
+                            <div className="relative border border-[#111111] p-6 sm:p-8">
+                                <span
+                                    aria-hidden
+                                    className="absolute -top-4 right-6 -rotate-3 border-2 border-[#CC0000] bg-[#F9F9F7] px-3 py-1 font-news-mono text-xs font-bold uppercase tracking-[0.25em] text-[#CC0000]"
+                                >
+                                    Private
+                                </span>
+                                <p className="font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                    Official Statement
+                                </p>
+                                <p className="drop-cap mt-4 text-justify font-body text-base leading-relaxed">
+                                    All projects are private. Client systems &mdash; enterprise dashboards,
+                                    management portals, and cross-platform applications &mdash; are built under
+                                    confidentiality and cannot be displayed here. What I can share: the fields
+                                    of engagement, the stack behind them, and references on request.
+                                </p>
+                                <ul className="mt-6 border-t border-[#111111]">
+                                    {[
+                                        ['Enterprise Systems', 'Laravel · MySQL · REST APIs'],
+                                        ['Desktop & Mobile Apps', 'Electron.js · Ionic.js · Flutter'],
+                                        ['Interfaces & Portals', 'React.js · TypeScript'],
+                                    ].map(([field, stack]) => (
+                                        <li
+                                            key={field}
+                                            className="flex flex-col gap-1 border-b border-[#E5E5E0] py-3 sm:flex-row sm:items-center sm:justify-between"
+                                        >
+                                            <span className="font-news-sans text-sm font-semibold">{field}</span>
+                                            <span className="font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                                {stack}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </motion.div>
+
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={reveal}
+                            className="col-span-12 lg:col-span-5"
+                        >
+                            <div className="border border-[#111111]">
+                                <p className="border-b border-[#111111] px-4 py-2 font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                    Case Files &mdash; Access Restricted
+                                </p>
+                                {[1, 2, 3].map((n) => (
+                                    <div
+                                        key={n}
+                                        className="flex items-center justify-between gap-3 border-b border-[#E5E5E0] px-4 py-3 last:border-b-0"
+                                    >
+                                        <span className="font-news-mono text-[11px] uppercase tracking-widest">
+                                            File No. 00{n}
+                                        </span>
+                                        <span className="bg-[#111111] px-2 py-0.5 font-news-mono text-[10px] uppercase tracking-widest text-[#F9F9F7]">
+                                            &#x25A0; Redacted
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                            <Link
+                                href="#contact"
+                                className="mt-4 flex min-h-[44px] items-center justify-center gap-2 border border-[#111111] bg-[#111111] px-6 font-news-sans text-xs font-semibold uppercase tracking-widest text-[#F9F9F7] transition-all duration-200 hover:bg-[#F9F9F7] hover:text-[#111111]"
+                            >
+                                Request the Dossier <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+                            </Link>
+                            <p className="mt-3 text-center font-news-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                                Full case files shared privately on request
+                            </p>
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+
             {/* --- EXPERIENCE (inverted) --- */}
             <section id="experience" className="border-b-4 border-[#111111] bg-[#111111] text-[#F9F9F7]">
                 <div className="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-16">
                     <div className="mb-10 border-b-4 border-double border-[#F9F9F7] pb-6">
                         <p className="font-news-mono text-xs uppercase tracking-widest text-[#CC0000]">
-                            Sec. 04 &mdash; Archive
+                            Sec. 05 &mdash; Archive
                         </p>
                         <h2 className="font-display mt-2 text-4xl font-black tracking-tight lg:text-5xl">
                             Service Record
@@ -398,7 +489,7 @@ const App = () => {
             {/* --- CONTACT / NOTICES --- */}
             <section id="contact" className="newsprint-texture">
                 <div className="mx-auto max-w-screen-xl scroll-mt-24 px-4 py-16">
-                    <SectionLabel index="05 &mdash; Notices" title="Place a Notice" />
+                    <SectionLabel index="06 &mdash; Notices" title="Place a Notice" />
                     <div className="grid grid-cols-12 gap-8">
                         <motion.div
                             initial="hidden"
